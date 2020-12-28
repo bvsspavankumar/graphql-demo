@@ -1,7 +1,22 @@
-const express = require('express')
+const express = require("express");
+const { graphqlHTTP } = require("express-graphql");
 
-const app = express()
+const schema = require('./schema/schema')
 
-app.listen(4000, () => {
-    console.log('Listening')
-})
+const app = express();
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
+
+app.use("/", (req, res) => res.json({ msg: "hello graphql" }));
+
+const PORT = 4000;
+
+app.listen(PORT, () => {
+  console.log(`Listening @ localhost:${PORT}`);
+});
